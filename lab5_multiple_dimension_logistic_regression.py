@@ -46,6 +46,7 @@ for epoch in range(1000000):
     optimizer.step()
 
     # 在训练过10000次之后进行一次输出，查看当前的loss和准确率acc
+    # 准确率acc的计算先将y_pred按照是否大于0.5归置为1和0，再将归置出来的y_pred_label与y_data进行比较，算出相同的个数做成准确率
     if epoch % 10000 == 9999:
         y_pred_label = torch.where(y_pred >= 0.5, torch.tensor([1.0]), torch.tensor([0.0]))
 
