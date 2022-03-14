@@ -5,19 +5,20 @@ from torch.utils.data import DataLoader
 import torch.nn.functional as F
 
 # prepare dataset
-
 batch_size = 64
-transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])  # 归一化,均值和方差
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.1307,), (0.3081,))
+])
 
 train_dataset = datasets.MNIST(root='../dataset/mnist/', train=True, download=True, transform=transform)
 train_loader = DataLoader(train_dataset, shuffle=True, batch_size=batch_size)
+
 test_dataset = datasets.MNIST(root='../dataset/mnist/', train=False, download=True, transform=transform)
 test_loader = DataLoader(test_dataset, shuffle=False, batch_size=batch_size)
 
 
 # design model using class
-
-
 class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -43,15 +44,14 @@ criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.5)
 
 
-# training cycle forward, backward, update
-
-
+# training cycle
 def train(ep):
     running_loss = 0.0
     for batch_idx, data in enumerate(train_loader, 0):
         # 获得一个批次的数据和标签
         inputs, target = data
         optimizer.zero_grad()
+
         # 获得模型预测结果(64, 10)
         outputs = model(inputs)
         # 交叉熵代价函数outputs(64,10),target（64）
