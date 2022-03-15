@@ -33,8 +33,8 @@ class Net(torch.nn.Module):
         x = F.relu(self.pooling(self.conv2(x)))
         x = F.relu(self.pooling(self.conv3(x)))
         x = x.view(batch_size, -1)
-        x = self.fc1(x)
-        x = self.fc2(x)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
         x = self.fc3(x)
         return x
 
@@ -71,7 +71,7 @@ def train(ep):
 
         running_loss += loss.item()
         if batch_idx % 300 == 299:
-            print('[%d, %5d] loss: %.3f' % (ep + 1, batch_idx + 1, running_loss / 300))
+            print("[%d, %5d] loss: %.3f" % (ep + 1, batch_idx + 1, running_loss / 300))
             running_loss = 0.0
 
 
@@ -86,11 +86,11 @@ def test():
             _, predicted = torch.max(outputs.data, dim=1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-    print("accuracy on test set: %d%% " % (100 * correct / total), " [correct:", correct, ", total:", total, "]")
+    print("accuracy on test set: %d%%" % (100 * correct / total), "[correct:", correct, ", total:", total, "]")
     return correct / total
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     epoch_list = []
     acc_list = []
 
